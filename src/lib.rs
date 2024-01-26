@@ -64,10 +64,10 @@ pub trait Group:
     + Sum
     + for<'a> Sum<&'a Self>
     + Neg<Output = Self>
-    + GroupOps
-    + GroupOpsOwned
-    + ScalarMul<<Self as Group>::Scalar>
-    + ScalarMulOwned<<Self as Group>::Scalar>
+    + GroupOps // add, sub
+    + GroupOpsOwned // add, sub with reference
+    + ScalarMul<<Self as Group>::Scalar> // scalar mul
+    + ScalarMulOwned<<Self as Group>::Scalar> // with reference to scalar
 {
     /// Scalars modulo the order of this group's scalar field.
     type Scalar: PrimeField;
@@ -94,7 +94,9 @@ pub trait Group:
 
 /// Efficient representation of an elliptic curve point guaranteed.
 pub trait Curve:
-    Group + GroupOps<<Self as Curve>::AffineRepr> + GroupOpsOwned<<Self as Curve>::AffineRepr>
+    Group
+    + GroupOps<<Self as Curve>::AffineRepr> // add projective with affine
+    + GroupOpsOwned<<Self as Curve>::AffineRepr> // add projective with reference to affine
 {
     /// The affine representation for this elliptic curve.
     type AffineRepr;

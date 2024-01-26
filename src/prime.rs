@@ -29,7 +29,9 @@ pub trait PrimeCurveAffine: GroupEncoding
     + Eq
     + 'static
     + Neg<Output = Self>
+    // mul affine point by scalar and return projective point
     + Mul<<Self as PrimeCurveAffine>::Scalar, Output = <Self as PrimeCurveAffine>::Curve>
+    // mul affine point by reference to scalar and return projective point
     + for<'r> Mul<&'r <Self as PrimeCurveAffine>::Scalar, Output = <Self as PrimeCurveAffine>::Curve>
 {
     type Scalar: PrimeField;
